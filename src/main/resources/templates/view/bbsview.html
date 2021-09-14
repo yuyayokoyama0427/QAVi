@@ -9,7 +9,7 @@
 	<h3>QAVi(掲示板アプリ)</h3>
 	
 	<div th:each="article : ${articleList}">
-		投稿者名：<span th:text="${artcile.name}"></span><br>
+		投稿者名：<span th:text="${article.name}"></span><br>
 		投稿内容：<pre><span th:text="${article.content}"></span></pre>
 	
 	</div>
