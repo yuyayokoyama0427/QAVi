@@ -1,7 +1,7 @@
 package com.example.domain;
 
 /**
- * 記事情報を表すドメイン.
+ * コメントを表すドメイン.
  * 
  * @author yuyayokoyama
  *

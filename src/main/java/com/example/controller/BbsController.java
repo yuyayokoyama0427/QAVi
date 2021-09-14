@@ -13,8 +13,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.domain.Article;
+import com.example.domain.Comment;
 import com.example.form.ArticleForm;
+import com.example.form.CommentForm;
 import com.example.service.ArticleService;
+import com.example.service.CommentService;
 
 /**
  * 掲示板を操作するコントローラー.
@@ -30,15 +33,36 @@ public class BbsController {
 	@Autowired
 	private ArticleService articleService;
 	
+	@Autowired
+	private CommentService commentService;
+	
+	/**
+	 * 記事フォームの初期化.
+	 * @return 記事フォーム
+	 */
 	@ModelAttribute
-	public ArticleForm setUpArticleForm() {
+	public ArticleForm setArticleForm() {
 		return new ArticleForm();
 	}
+	
+	@ModelAttribute
+	public CommentForm setCommentForm() {
+		return new CommentForm();
+	}
+	
+	
+	
 	
 	
 	@RequestMapping("")
 	public String index(Model model) {
 		List<Article> articleList = articleService.findAll();
+		for(Article article : articleList) {
+			int articleId = article.getId();
+			List<Comment> commentList = commentService.findByArticleId(articleId);
+			article.setCommentList(commentList);
+		}
+		
 		// 記事リストをスコープに格納する
 		model.addAttribute("articleList", articleList);
 		return "view/bbsview";
