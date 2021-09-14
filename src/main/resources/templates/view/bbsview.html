@@ -7,7 +7,14 @@
 </head>
 <body>
 	<h3>QAVi(掲示板アプリ)</h3>
-	
+	<form th:action="@{bbs/postarticle}" th:object="${articleForm}" method="post">
+	<div th:errors="*{name}" class="error-messages"></div>
+	投稿者名：<input type="text" name="name" th:field="*{name}" th:errorclass="error-input"><br>
+	<div th:errors="*{content}" class="error-messages"></div>
+	投稿内容：<textarea name="content" th:field="*{content}" th:errorclass="error-input" rows="5" cols="25"></textarea><br>
+	<input type="submit" value="記事投稿">
+	</form>
+	<hr>
 	<div th:each="article : ${articleList}">
 		投稿者名：<span th:text="${article.name}"></span><br>
 		投稿内容：<pre><span th:text="${article.content}"></span></pre>
