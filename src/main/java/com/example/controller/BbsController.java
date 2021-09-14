@@ -2,10 +2,13 @@ package com.example.controller;
 
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -39,6 +42,25 @@ public class BbsController {
 		// 記事リストをスコープに格納する
 		model.addAttribute("articleList", articleList);
 		return "view/bbsview";
+	}
+	
+	/**
+	 * 記事の投稿.
+	 * 
+	 * @param form フォーム
+	 * @param result リザルト
+	 * @param model モデル
+	 * @return 掲示板画面
+	 */
+	@RequestMapping(value = "/postarticle")
+	public String postarticle(@Validated ArticleForm form, BindingResult result, Model model) {
+		if(result.hasErrors()) {
+			return index(model);
+		}
+		Article article = new Article();
+		BeanUtils.copyProperties(form, article);
+		articleService.insert(article);
+		return "redirect:/bbs";
 	}
 
 }

@@ -21,7 +21,7 @@ public class ArticleForm {
 	
 	/** 投稿内容. */
 	@NotNull(message = "投稿内容を入力してください！")
-	@Size(min = 1, message = "値を入力してください")
+	@Size(min = 1, message = "値を入力してください！")
 	private String content;
 
 	public int getId() {
