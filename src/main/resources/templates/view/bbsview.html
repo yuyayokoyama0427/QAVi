@@ -12,7 +12,7 @@
 	投稿者名：<input type="text" name="name" th:field="*{name}" th:errorclass="error-input"><br>
 	<div th:errors="*{content}" class="error-messages"></div><br>
 	投稿内容：<textarea name="content" th:field="*{content}" th:errorclass="error-input" rows="5" cols="25"></textarea><br><br>
-	<input type="submit" value="記事投稿">
+	<input type="submit" value="記事投稿"><br>
 	</form>
 	<hr>
 	<div th:each="article : ${articleList}">
