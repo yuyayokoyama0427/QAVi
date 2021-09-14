@@ -10,8 +10,8 @@
 	<form th:action="@{bbs/postarticle}" th:object="${articleForm}" method="post">
 	<div th:errors="*{name}" class="error-messages"></div>
 	投稿者名：<input type="text" name="name" th:field="*{name}" th:errorclass="error-input"><br>
-	<div th:errors="*{content}" class="error-messages"></div>
-	投稿内容：<textarea name="content" th:field="*{content}" th:errorclass="error-input" rows="5" cols="25"></textarea><br>
+	<div th:errors="*{content}" class="error-messages"></div><br>
+	投稿内容：<textarea name="content" th:field="*{content}" th:errorclass="error-input" rows="5" cols="25"></textarea><br><br>
 	<input type="submit" value="記事投稿">
 	</form>
 	<hr>
@@ -20,6 +20,7 @@
 		投稿内容：<pre><span th:text="${article.content}"></span></pre>
 	
 	</div>
+	
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script th:src=@{/js/like.js}></script>
