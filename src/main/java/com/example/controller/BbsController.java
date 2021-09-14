@@ -44,6 +44,14 @@ public class BbsController {
 		return "view/bbsview";
 	}
 	
+	/**
+	 * 記事の投稿.
+	 * 
+	 * @param form フォーム
+	 * @param result リザルト
+	 * @param model モデル
+	 * @return 掲示板画面
+	 */
 	@RequestMapping(value = "/postarticle")
 	public String postarticle(@Validated ArticleForm form, BindingResult result, Model model) {
 		if(result.hasErrors()) {
