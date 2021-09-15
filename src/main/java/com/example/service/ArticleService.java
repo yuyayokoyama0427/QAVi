@@ -38,5 +38,14 @@ public class ArticleService {
 	public Article insert(Article article) {
 		return articleRepository.insert(article);
 	}
+	
+	/**
+	 * 記事の削除.
+	 * 
+	 * @param id 削除したい記事ID
+	 */
+	public void delete(int id) {
+		articleRepository.delete(id);
+	}
 
 }
