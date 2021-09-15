@@ -41,12 +41,12 @@ public class BbsController {
 	 * @return 記事フォーム
 	 */
 	@ModelAttribute
-	public ArticleForm setArticleForm() {
+	public ArticleForm setUpArticleForm() {
 		return new ArticleForm();
 	}
 	
 	@ModelAttribute
-	public CommentForm setCommentForm() {
+	public CommentForm setUpCommentForm() {
 		return new CommentForm();
 	}
 	
@@ -84,6 +84,25 @@ public class BbsController {
 		Article article = new Article();
 		BeanUtils.copyProperties(form, article);
 		articleService.insert(article);
+		return "redirect:/bbs";
+	}
+	
+	/**
+	 * コメントの投稿.
+	 * 
+	 * @param form フォーム
+	 * @param result リザルト
+	 * @param model モデル
+	 * @return 掲示板画面
+	 */
+	@RequestMapping(value = "/postcomment")
+	public String postcoment(@Validated CommentForm form, BindingResult result, Model model) {
+		if (result.hasErrors()) {
+			return index(model);
+		}
+		Comment comment = new Comment();
+		BeanUtils.copyProperties(form, comment);
+		commentService.insert(comment);
 		return "redirect:/bbs";
 	}
 
