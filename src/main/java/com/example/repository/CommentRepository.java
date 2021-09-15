@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -47,6 +48,22 @@ public class CommentRepository {
 		SqlParameterSource param = new MapSqlParameterSource().addValue("article_id", articleId);
 		List<Comment> commentList = template.query(sql.toString(), param, COMMENT_ROW_MAPPER);
 		return commentList;
+	}
+	
+	
+	/**
+	 * コメントの新規作成.
+	 * 
+	 * @param comment コメント
+	 * @return 作成されたコメント情報
+	 */
+	public Comment insert(Comment comment) {
+		SqlParameterSource param = new BeanPropertySqlParameterSource(comment);
+		if(comment.getId() != null) {
+			throw new NullPointerException();
+		}
+		template.update("INSERT INTO comments(name, content, article_id) VALUES(:name, :content, :articleId)", param);
+		return comment;
 	}
 
 }
