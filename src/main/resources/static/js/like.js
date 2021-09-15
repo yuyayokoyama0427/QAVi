@@ -5,7 +5,7 @@ $(function() {
 		// ajaxでコントローラにリクエストを送信
 		$.ajax({
 			type : "GET", // GET or POST
-			url : "/joinedbbs/like", // 送信先のコントローラURL
+			url : "/bbs/like", // 送信先のコントローラURL
 			data : {
 				articleId : articleId
 			}, // リクエストパラメータをJSON形式で送る

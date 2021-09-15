@@ -1,6 +1,10 @@
 package com.example.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.ServletContext;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.domain.Article;
 import com.example.domain.Comment;
@@ -35,6 +40,9 @@ public class BbsController {
 	
 	@Autowired
 	private CommentService commentService;
+	
+	@Autowired
+	private ServletContext application;
 	
 	/**
 	 * 記事フォームの初期化.
@@ -116,6 +124,25 @@ public class BbsController {
 	public String deletearticle(ArticleForm form) {
 		articleService.delete(form.getId());
 		return "redirect:/bbs";
+	}
+	
+	@ResponseBody
+	@RequestMapping("/like")
+	synchronized public Map<String, Integer> like(String articleId){
+		// applicationスコープに記事IDについている「いいね」件数を取得
+		Integer likeCount = (Integer) application.getAttribute(articleId);
+		
+		// 1件もなければ1件を登録
+		if(likeCount == null) {
+			likeCount = 0;
+		}
+		// いいね件数を1増やす
+		++likeCount;
+		application.setAttribute(articleId, likeCount);
+		// 　増やした件数をMapとして返す→JSON形式
+		Map<String, Integer> likeMap = new HashMap<>();
+		likeMap.put("likeCount", likeCount);
+		return likeMap;
 	}
 
 }
