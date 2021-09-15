@@ -24,6 +24,26 @@
 		コメント者名：<span th:text="${comment.name}"></span><br>
 		コメント内容：<pre><span th:text="${comment.content}"></span></pre>
 	</div>
+	<br>
+	<form th:action="@{/bbs/postcomment}" th:object="${commentForm}" method="post">
+	<input type="hidden" name="articleId" th:value="${article.id}">
+	<div th:if="${article.id == commentForm.articleId}">
+		<div th:errors="*{name}" class="error-messages"></div>
+	</div>
+	名前：<br>
+	<input type="text" name="name" th:if="${article.id == commentForm.articleId}" th:field="*{name}" th:errorclass="error-input">
+	<input type="text" name="name" th:if="${article.id != commentForm.articleId}">
+	<br>
+	
+	<div th:if="${article.id == commentForm.articleId}">
+		<div th:errors="*{content}" class="error-messages"></div>
+	</div>
+	コメント：<br>
+	<textarea name="content" th:if="${article.id == commentForm.articleId}" th:field="*{content}" th:errorclass="error-input" rows="5" cols="25"></textarea>
+	<textarea name="content" th:if="${article.id != commentForm.articleId}" rows="5" cols="25"></textarea>
+	<br>
+	<input type="submit" value="コメント投稿"><br><br>
+	</form>
 	<hr>
 	</div>
 	
