@@ -105,5 +105,17 @@ public class BbsController {
 		commentService.insert(comment);
 		return "redirect:/bbs";
 	}
+	
+	/**
+	 * 記事の削除.
+	 * 
+	 * @param form 記事フォーム
+	 * @return 記事登録画面
+	 */
+	@RequestMapping(value = "/deletearticle")
+	public String deletearticle(ArticleForm form) {
+		articleService.delete(form.getId());
+		return "redirect:/bbs";
+	}
 
 }
