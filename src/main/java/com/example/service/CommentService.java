@@ -29,5 +29,14 @@ public class CommentService {
 	public List<Comment> findByArticleId(int articleId){
 		return commentRepository.findByArticleId(articleId);
 	}
+	
+	/**
+	 * コメントの登録.
+	 * 
+	 * @param comment コメント
+	 */
+	public void insert(Comment comment) {
+		commentRepository.insert(comment);
+	}
 
 }
