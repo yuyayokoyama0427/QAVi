@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
@@ -59,5 +60,19 @@ public class ArticleRepository {
 		template.update(insertSql, param);
 		return article;
 	}
+	
+	/**
+	 * 記事の削除.
+	 * コメントも同時に削除。
+	 * 
+	 * @param articleId
+	 */
+	public void delete(int articleId) {
+		SqlParameterSource param = new MapSqlParameterSource().addValue("id", articleId);
+		String sql = "WITH deleted AS (DELETE FROM articles WHERE id = :id RETURNING id) DELETE FROM comments WHERE article_id IN (SELECT id FROM deleted)";
+		template.update(sql, param);
+	}
+	
+	//参考：http://aoyagikouhei.blog8.fc2.com/blog-entry-183.html
 
 }
