@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import com.example.domain.Article;
 
+
 /**
  * articlesテーブルを操作するリポジトリ.
  * 
@@ -75,4 +76,6 @@ public class ArticleRepository {
 	
 	//参考：http://aoyagikouhei.blog8.fc2.com/blog-entry-183.html
 
+	
+	
 }
