@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -7,6 +8,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.example.domain.User;
 import com.example.form.RegisterUserForm;
 import com.example.service.UserService;
 
@@ -35,8 +37,21 @@ public class RegisterUserController {
 			result.rejectValue("confirmPassword", "", "パスワードと確認用パスワードが一致しません。");
 		}
 		
-		User duplicateUser = registerUserService.findByMailAddress(form.getEmail());
+		// メールアドレス重複チェック
+		User duplicateUser = userService.findByMailAddress(form.getEmail());
+		if (duplicateUser != null) {
+			result.rejectValue("email", "", "既に登録済みのメールアドレスです。");
+		}
 		
+		if (result.hasErrors()) {
+			return toRegister();
+		}
+		
+		// フォームからドメインにプロパティ値をコピー
+		User user = new User();
+		BeanUtils.copyProperties(form, user);
+		userService.insert(user);
+		return "redirect:/login";
 	}
 
 }
