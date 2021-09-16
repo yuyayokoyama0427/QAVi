@@ -37,7 +37,14 @@ public class UserService {
 		userRepository.insert(user);
 	}
 	
-	
-	
+	/**
+	 * メールアドレスからユーザー情報を取得.
+	 * 
+	 * @param email メールアドレス
+	 * @return ユーザー情報
+	 */
+	public User findByMailAddress(String email) {
+		return userRepository.findByMailAddress(email);
+	}
 	
 }
