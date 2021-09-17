@@ -43,7 +43,7 @@ public class LoginController {
 	 */
 	@RequestMapping("")
 	public String toLogin() {
-		return "login";
+		return "login_user";
 	}
 	
 	/**
