@@ -69,5 +69,39 @@ public class UserRepository {
 		}
 		return userList.get(0);
 	}
+	
+	/**
+	 * ユーザー情報を主キー検索.
+	 * 
+	 * @param id ID
+	 * @return ユーザー情報 存在しない場合はnullを返す
+	 */
+	public User load(Integer id) {
+		String sql = "SELECT id, name, email, password, zipcode, address, telephone FROM users WHERE id = :id";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
+		List<User> userList = template.query(sql, param, USER_ROW_MAPPER);
+		if (userList.size() == 0) {
+			return null;
+		}
+		return userList.get(0);
+	}
+	
+	/**
+	 * メールアドレスとパスワードからユーザー情報を取得.
+	 * 
+	 * @param email メールアドレス
+	 * @param password パスワード
+	 * @return ユーザー情報 存在しない場合はnullを返す
+	 */
+	public User findByMailAddressAndPassword(String email, String password) {
+String sql = "SELECT id,name, email, password, zipcode, address, telephone FROM users where email=:email and password=:password";
+		
+		SqlParameterSource param = new MapSqlParameterSource().addValue("email", email).addValue("password",password);
+		List<User> userList = template.query(sql, param, USER_ROW_MAPPER);
+		if (userList.size() == 0) {
+			return null;
+		}
+		return userList.get(0);
+	}
 
 }
