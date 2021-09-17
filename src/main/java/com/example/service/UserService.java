@@ -47,4 +47,23 @@ public class UserService {
 		return userRepository.findByMailAddress(email);
 	}
 	
+	
+	/**
+	 * ログインする.
+	 * 
+	 * @param email メールアドレス
+	 * @param password パスワード
+	 * @return ユーザー情報
+	 */
+	public User login(String email, String password) {
+		User user = userRepository.findByMailAddress(email);
+		if(user == null) {
+			return null;
+		}
+		if(passwordEncoder.matches(password, user.getPassword())) {
+			return user;
+		}
+		return null;
+	}
+	
 }
