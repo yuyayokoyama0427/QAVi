@@ -66,4 +66,17 @@ public class UserService {
 		return null;
 	}
 	
+	/**
+	 * ユーザー情報を更新する.
+	 * 
+	 * @param user 更新されたユーザー情報
+	 */
+	public void update(User user) {
+		String password = user.getPassword();
+		String digest = passwordEncoder.encode(password);
+		user.setPassword(digest);
+		
+		userRepository.update(user);
+	}
+	
 }
