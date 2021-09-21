@@ -92,7 +92,7 @@ public class UpdateUserController {
 		BeanUtils.copyProperties(form, user);
 		System.out.println(user);
 		userService.update(user);
-		return "redirect:/";
+		return "redirect:/user-detail";
 	}
 
 }
