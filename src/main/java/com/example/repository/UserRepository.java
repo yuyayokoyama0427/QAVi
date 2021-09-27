@@ -103,5 +103,16 @@ String sql = "SELECT id,name, email, password, zipcode, address, telephone FROM 
 		}
 		return userList.get(0);
 	}
+	
+	/**
+	 * ユーザー情報の更新.
+	 * 
+	 * @param user 更新したユーザー情報.
+	 */
+	public void update(User user) {
+		SqlParameterSource param = new BeanPropertySqlParameterSource(user);
+		String updateSql = "UPDATE users SET name=:name, email=:email, password=:password, zipcode=:zipcode, address=:address, telephone=:telephone WHERE id=:id ;";
+		template.update(updateSql, param);
+	}
 
 }
