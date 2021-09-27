@@ -79,4 +79,13 @@ public class UserService {
 		userRepository.update(user);
 	}
 	
+	/**
+	 * ユーザー情報を削除する.
+	 * 
+	 * @param id ID
+	 */
+	public void deleteById(Integer id) {
+		userRepository.deleteById(id);
+	}
+	
 }
