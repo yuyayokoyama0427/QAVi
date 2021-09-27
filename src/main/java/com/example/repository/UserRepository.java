@@ -114,5 +114,16 @@ String sql = "SELECT id,name, email, password, zipcode, address, telephone FROM 
 		String updateSql = "UPDATE users SET name=:name, email=:email, password=:password, zipcode=:zipcode, address=:address, telephone=:telephone WHERE id=:id ;";
 		template.update(updateSql, param);
 	}
+	
+	/**
+	 * ユーザーIDからユーザー情報を削除する.
+	 * 
+	 * @param id ID
+	 */
+	public void deleteById(Integer id) {
+		String sql = "DELETE FROM users WHERE id=:id";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
+		template.update(sql, param);
+	}
 
 }
