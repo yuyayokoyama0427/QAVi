@@ -65,11 +65,11 @@ public class BbsController {
 	@RequestMapping("")
 	public String index(Model model) {
 		List<Article> articleList = articleService.findAll();
-		for(Article article : articleList) {
-			int articleId = article.getId();
-			List<Comment> commentList = commentService.findByArticleId(articleId);
-			article.setCommentList(commentList);
-		}
+//		for(Article article : articleList) {
+//			int articleId = article.getId();
+//			List<Comment> commentList = commentService.findByArticleId(articleId);
+//			article.setCommentList(commentList);
+//		}
 		
 		// 記事リストをスコープに格納する
 		model.addAttribute("articleList", articleList);
