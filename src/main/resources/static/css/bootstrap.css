@@ -3940,6 +3940,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   padding: 5px 5px;
   font-size: 18px;
   line-height: 20px;
+  box-shadow: 0 5px 5px rgba(0,0,0,0.3)
 }
 
 .navbar-brand2 {
