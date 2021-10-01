@@ -9,19 +9,19 @@ package com.example.domain;
 public class Comment {
 	
 	/** ID */
-	private Integer id;
+	private Long id;
 	/** コメント名 */
 	private String name;
 	/** コメント内容 */
 	private String content;
 	/** 記事ID */
-	private Integer articleId;
+	private Long articleId;
 	
 	
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getName() {
@@ -36,18 +36,15 @@ public class Comment {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public Integer getArticleId() {
+	public Long getArticleId() {
 		return articleId;
 	}
-	public void setArticleId(Integer articleId) {
+	public void setArticleId(Long articleId) {
 		this.articleId = articleId;
 	}
-	
 	@Override
 	public String toString() {
 		return "Comment [id=" + id + ", name=" + name + ", content=" + content + ", articleId=" + articleId + "]";
 	}
 	
-	
-
 }

@@ -1,9 +1,11 @@
 package com.example.repository;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -11,6 +13,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import com.example.domain.Article;
+import com.example.domain.Comment;
 
 
 /**
@@ -26,26 +29,59 @@ public class ArticleRepository {
 	@Autowired
 	private NamedParameterJdbcTemplate template;
 	
-	private static final RowMapper<Article> ARTICLE_ROW_MAPPER = (rs, i)->{
+	private static final ResultSetExtractor<List<Article>> ARTICLE_RESULT_SET_EXTRACTOR = (rs)->{
 		
-		Article article = new Article();
-		article.setId(rs.getInt("id"));
-		article.setName(rs.getString("name"));
-		article.setContent(rs.getString("content"));
+		List<Article> articleList = new LinkedList<Article>();
+		List<Comment> commentList = null;
 		
-		return article;
+		// 前の行の記事IDを退避しておく変数
+		long beforeArticleId = 0;
+		
+		while (rs.next()) {
+			// 現在検索されている記事IDを退避
+			int nowArticleId = rs.getInt("id");
+			
+			// 現在の記事IDと前の記事IDが違う場合はArticleオブジェクトを生成
+			if (nowArticleId != beforeArticleId) {
+				Article article = new Article();
+				article.setId(nowArticleId);
+				article.setName(rs.getString("name"));
+				article.setContent(rs.getString("content"));
+				// 空のコメントリストを作成し、Articleオブジェクトにセットしておく
+				commentList = new ArrayList<Comment>();
+				article.setCommentList(commentList);
+				// コメントがセットされていない状態のArticleオブジェクトをarticleListオブジェクトにaddする
+				articleList.add(article);
+			}
+			
+			// 記事だけあってコメントがない場合はCommentオブジェクトは作らない
+			if (rs.getInt("com_id") != 0) {
+				Comment comment = new Comment();
+				comment.setId(rs.getLong("com_id"));
+				comment.setName(rs.getString("com_name"));
+				comment.setContent(rs.getString("com_content"));
+				// コメントをarticleオブジェクト内にセットされているcommentListに直接addする(参照型なので可能)
+				commentList.add(comment);
+			}
+			
+			// 現在の記事IDを前の記事IDを入れる退避IDに格納
+			beforeArticleId = nowArticleId;
+		}
+		
+		return articleList;
 	};
 	
 	
 	/**
-	 * 記事情報の取得
+	 * 記事一覧の取得.
+	 * 記事に含まれているコメント一覧も同時に取得。
 	 * 
 	 * @return 記事全件
 	 */
 	public List<Article> findAll(){
-		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT id, name, content FROM articles ORDER BY id DESC;");
-		List<Article> articleList = template.query(sql.toString(), ARTICLE_ROW_MAPPER);
+		String sql = "SELECT a.id, a.name, a.content, com.id com_id, com.name com_name, com.content com_content,com.article_id "
+				+ "FROM articles a LEFT JOIN comments com ON a.id = com.article_id ORDER BY a.id DESC, com.id;";
+		List<Article> articleList = template.query(sql, ARTICLE_RESULT_SET_EXTRACTOR);
 		
 		return articleList;
 	}
